@@ -18,14 +18,7 @@ namespace ConsoleApplication
 
             using (var session = NHibernateHelper.SessionFactory.OpenSession())
             {
-                var fp1 = session.Query<FundProduct>().Single(x => x.Id == 1);
-                var fp2 = session.Query<FundProduct>().Single(x => x.Id == 2);
-
-                var ex = new FundProductExcludedFromConversion {FundProd = fp2, ExcludedFundProd = fp1};
-
-                session.SaveOrUpdate(ex);
-
-                session.Flush();
+                var result = session.Query<FundProduct>().Single(x => x.Id == 1);
             }
 
             Console.ReadLine();

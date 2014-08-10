@@ -57,9 +57,8 @@ namespace ConsoleApplication
             var mapper = new ModelMapper();
 
             mapper.AddMapping<FundProductMap>();
-            mapper.AddMapping<FundProductExcludedFromConversionMap>();
 
-            HbmMapping mapping = mapper.CompileMappingFor(new[] { typeof(FundProduct), typeof(FundProductExcludedFromConversion) });
+            HbmMapping mapping = mapper.CompileMappingFor(new[] { typeof(FundProduct)});
 
             return mapping;
         }
@@ -89,21 +88,20 @@ namespace ConsoleApplication
                 var fp3 = new FundProduct {Name = "Fundusz #3"};
                 var fp4 = new FundProduct {Name = "Fundusz #4"};
 
-                var fundProds = new List<FundProduct>(new[] {fp1, fp2, fp3, fp4});
+                fp1.ExcludedFromConversion.Add(fp2);
+                fp1.ExcludedFromConversion.Add(fp3);
+                fp1.ExcludedFromConversion.Add(fp4);
+
+                fp2.ExcludedFromConversion.Add(fp1);
+                fp2.ExcludedFromConversion.Add(fp3);
+                fp2.ExcludedFromConversion.Add(fp4);
+
+                var fundProds = new List<FundProduct>(new [] {fp1, fp2, fp3, fp4});
+
+                fp3.ExcludedFromConversion.Add(fp1);
 
                 foreach (var fp in fundProds)
                     session.SaveOrUpdate(fp);
-
-                var ex1 = new FundProductExcludedFromConversion { FundProd = fp1, ExcludedFundProd = fp2 };
-                var ex2 = new FundProductExcludedFromConversion { FundProd = fp1, ExcludedFundProd = fp3 };
-                var ex3 = new FundProductExcludedFromConversion { FundProd = fp1, ExcludedFundProd = fp4 };
-
-                fp1.ExcludedFromConversion.Add(ex1);
-                fp1.ExcludedFromConversion.Add(ex2);
-                fp1.ExcludedFromConversion.Add(ex3);
-
-                foreach (var ex in fp1.ExcludedFromConversion)
-                    session.SaveOrUpdate(ex);
 
                 session.Flush();
             }

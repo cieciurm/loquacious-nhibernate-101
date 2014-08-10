@@ -8,11 +8,11 @@ namespace ConsoleApplication.Model
     {
         public virtual int Id { get; set; }
         public virtual string Name { get; set; }
-        public virtual ISet<FundProductExcludedFromConversion> ExcludedFromConversion { get; set; }
+        public virtual ISet<FundProduct> ExcludedFromConversion { get; set; }
 
         public FundProduct()
         {
-            ExcludedFromConversion = new HashedSet<FundProductExcludedFromConversion>();
+            ExcludedFromConversion = new HashedSet<FundProduct>();
         }
     }
 
@@ -28,10 +28,14 @@ namespace ConsoleApplication.Model
                 m.Column("FundProductId"); // custom Primary Key name
             });
             Property<string>(x => x.Name);
-            Set(x => x.ExcludedFromConversion, 
-                cp => { }, 
-                cr => cr.OneToMany(x => x.Class(typeof(FundProductExcludedFromConversion)))
-            );
+
+            Set(x => x.ExcludedFromConversion, m =>
+            {
+                m.Table("ExcludedFund");
+                m.Cascade(Cascade.None);
+                m.Key(k => k.Column("FundProdId"));
+            }, map => map.ManyToMany(p => p.Column("ExcludedFundProdId")));
+
         }
     }
 }
