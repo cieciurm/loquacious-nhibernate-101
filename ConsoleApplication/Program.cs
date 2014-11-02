@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using ConsoleApplication.Model;
 using NHibernate.Linq;
-using NHibernate.Mapping;
-using Iesi.Collections.Generic;
 
 namespace ConsoleApplication
 {

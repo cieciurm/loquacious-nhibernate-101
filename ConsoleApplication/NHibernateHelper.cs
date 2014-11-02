@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg.MappingSchema;
@@ -58,7 +59,7 @@ namespace ConsoleApplication
 
             mapper.AddMapping<FundProductMap>();
 
-            HbmMapping mapping = mapper.CompileMappingFor(new[] { typeof(FundProduct)});
+            HbmMapping mapping = mapper.CompileMappingFor(new[] { typeof(FundProduct) });
 
             return mapping;
         }
@@ -75,7 +76,7 @@ namespace ConsoleApplication
 
         public static void CreateSchema()
         {
-			new SchemaExport(NHConfiguration).Drop(false, true);
+            new SchemaExport(NHConfiguration).Drop(false, true);
             new SchemaExport(NHConfiguration).Create(false, true);
         }
 
@@ -83,10 +84,10 @@ namespace ConsoleApplication
         {
             using (var session = NHibernateHelper.SessionFactory.OpenSession())
             {
-                var fp1 = new FundProduct {Name = "Fundusz #1"};
-                var fp2 = new FundProduct {Name = "Fundusz #2"};
-                var fp3 = new FundProduct {Name = "Fundusz #3"};
-                var fp4 = new FundProduct {Name = "Fundusz #4"};
+                var fp1 = new FundProduct { Name = "Fundusz #1" };
+                var fp2 = new FundProduct { Name = "Fundusz #2" };
+                var fp3 = new FundProduct { Name = "Fundusz #3" };
+                var fp4 = new FundProduct { Name = "Fundusz #4" };
 
                 fp1.ExcludedFromConversion.Add(fp2);
                 fp1.ExcludedFromConversion.Add(fp3);
@@ -96,12 +97,15 @@ namespace ConsoleApplication
                 fp2.ExcludedFromConversion.Add(fp3);
                 fp2.ExcludedFromConversion.Add(fp4);
 
-                var fundProds = new List<FundProduct>(new [] {fp1, fp2, fp3, fp4});
+                var fundProds = new List<FundProduct>(new[] { fp1, fp2, fp3, fp4 });
 
                 fp3.ExcludedFromConversion.Add(fp1);
 
                 foreach (var fp in fundProds)
                     session.SaveOrUpdate(fp);
+
+                var name = new NameChange { FundProduct = fp1, Name = "SFIO :)", ValidSince = DateTime.Now.AddDays(-10) };
+                session.SaveOrUpdate(name);
 
                 session.Flush();
             }
