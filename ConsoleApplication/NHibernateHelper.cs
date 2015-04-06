@@ -15,25 +15,12 @@ namespace ConsoleApplication
 {
     public class NHibernateHelper
     {
-        public static Configuration NHConfiguration { get; set; }
-        public static ISessionFactory SessionFactory { get; set; }
-
-        public static void Setup()
+        public static Configuration ConfigureNHibernate()
         {
-            NHConfiguration = ConfigureNHibernate();
-            //var mapping = GetMappingsLameWay();
-            var mapping = GetAllMappingsFromAssembly();
-            NHConfiguration.AddDeserializedMapping(mapping, "nhibernate-test");
-            SchemaMetadataUpdater.QuoteTableAndColumns(NHConfiguration);
-            SessionFactory = NHConfiguration.BuildSessionFactory();
-        }
+            var cfg = new Configuration();
+            cfg.SessionFactoryName("BuildIt");
 
-        private static Configuration ConfigureNHibernate()
-        {
-            var configure = new Configuration();
-            configure.SessionFactoryName("BuildIt");
-
-            configure.DataBaseIntegration(db =>
+            cfg.DataBaseIntegration(db =>
             {
                 db.Dialect<MsSql2012Dialect>();
                 db.Driver<SqlClientDriver>();
@@ -49,8 +36,11 @@ namespace ConsoleApplication
                 db.AutoCommentSql = true;
             });
 
+            var mapping = GetAllMappingsFromAssembly();
+            cfg.AddDeserializedMapping(mapping, "nhibernate-test");
+            SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
 
-            return configure;
+            return cfg;
         }
 
         private static HbmMapping GetMappingsLameWay()
@@ -59,7 +49,7 @@ namespace ConsoleApplication
 
             mapper.AddMapping<FundProductMap>();
 
-            HbmMapping mapping = mapper.CompileMappingFor(new[] { typeof(FundProduct) });
+            var mapping = mapper.CompileMappingFor(new[] { typeof(FundProduct) });
 
             return mapping;
         }
@@ -69,46 +59,46 @@ namespace ConsoleApplication
             var mapper = new ModelMapper();
 
             mapper.AddMappings(Assembly.GetExecutingAssembly().GetExportedTypes());
-            HbmMapping mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+            var mapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
 
             return mapping;
         }
 
-        public static void CreateSchema()
+        public static void CreateSchema(Configuration cfg)
         {
-            new SchemaExport(NHConfiguration).Drop(false, true);
-            new SchemaExport(NHConfiguration).Create(false, true);
+            //new SchemaExport(cfg).Drop(false, true);
+            new SchemaExport(cfg).Create(false, true);
         }
 
-        public static void Seed()
+        public static void Seed(ISession session)
         {
-            using (var session = NHibernateHelper.SessionFactory.OpenSession())
-            {
-                var fp1 = new FundProduct { Name = "Fundusz #1" };
-                var fp2 = new FundProduct { Name = "Fundusz #2" };
-                var fp3 = new FundProduct { Name = "Fundusz #3" };
-                var fp4 = new FundProduct { Name = "Fundusz #4" };
+            //using (var session = NHibernateHelper.SessionFactory.OpenSession())
+            //{
+            //    var fp1 = new FundProduct { Name = "Fundusz #1" };
+            //    var fp2 = new FundProduct { Name = "Fundusz #2" };
+            //    var fp3 = new FundProduct { Name = "Fundusz #3" };
+            //    var fp4 = new FundProduct { Name = "Fundusz #4" };
 
-                fp1.ExcludedFromConversion.Add(fp2);
-                fp1.ExcludedFromConversion.Add(fp3);
-                fp1.ExcludedFromConversion.Add(fp4);
+            //    fp1.ExcludedFromConversion.Add(fp2);
+            //    fp1.ExcludedFromConversion.Add(fp3);
+            //    fp1.ExcludedFromConversion.Add(fp4);
 
-                fp2.ExcludedFromConversion.Add(fp1);
-                fp2.ExcludedFromConversion.Add(fp3);
-                fp2.ExcludedFromConversion.Add(fp4);
+            //    fp2.ExcludedFromConversion.Add(fp1);
+            //    fp2.ExcludedFromConversion.Add(fp3);
+            //    fp2.ExcludedFromConversion.Add(fp4);
 
-                var fundProds = new List<FundProduct>(new[] { fp1, fp2, fp3, fp4 });
+            //    var fundProds = new List<FundProduct>(new[] { fp1, fp2, fp3, fp4 });
 
-                fp3.ExcludedFromConversion.Add(fp1);
+            //    fp3.ExcludedFromConversion.Add(fp1);
 
-                foreach (var fp in fundProds)
-                    session.SaveOrUpdate(fp);
+            //    foreach (var fp in fundProds)
+            //        session.SaveOrUpdate(fp);
 
-                var name = new NameChange { FundProduct = fp1, Name = "SFIO :)", ValidSince = DateTime.Now.AddDays(-10) };
-                session.SaveOrUpdate(name);
+            //    var name = new NameChange { FundProduct = fp1, Name = "SFIO :)", ValidSince = DateTime.Now.AddDays(-10) };
+            //    session.SaveOrUpdate(name);
 
-                session.Flush();
-            }
+            //    session.Flush();
         }
     }
 }
+
