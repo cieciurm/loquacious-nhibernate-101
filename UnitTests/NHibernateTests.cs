@@ -89,7 +89,7 @@ namespace UnitTests
         }
 
         [Test]
-        public void joinqueryover_test()
+        public void UsingBothJoinAliasAndJoinQuerOverAchieveTheSame()
         {
             Pet petAlias = null;
             Transporter transporterAlias = null;
@@ -104,7 +104,35 @@ namespace UnitTests
             Assert.NotNull(result);
         }
 
-        [SetUp]
+        [Test]
+        public void GrandChildrenEagerJoin()
+        {
+            var result1 = _session.QueryOver<Person>()
+                .Fetch(x => x.Pets).Eager
+                .Fetch(x => x.Pets.First().Transporters).Eager
+                .List();
+            //FROM Person this_ 
+            //left outer join Pet pets2_ on this_.Id=pets2_.Owner 
+            //left outer join Transporter transporte3_ on pets2_.Id=transporte3_.Pet
+
+            var result2 = _session.QueryOver<Person>()
+                .Fetch(x => x.Pets.First().Transporters).Eager
+                .List();
+            //FROM Person this_
+
+            Pet petAlias = null;
+            Transporter transportAlias = null;
+            var result3 = _session.QueryOver<Person>()
+                .JoinAlias(x => x.Pets, () => petAlias)
+                .JoinAlias(() => petAlias.Transporters, () => transportAlias)
+                .List();
+
+            Assert.NotNull(result1);
+            Assert.NotNull(result2);
+            Assert.NotNull(result3);
+        }
+
+        [TestFixtureSetUp]
         public void SetUp()
         {
             var cfg = NHibernateHelper.ConfigureNHibernate();
@@ -114,7 +142,7 @@ namespace UnitTests
             _session = sessionFactory.OpenSession();
         }
 
-        [TearDown]
+        [TestFixtureTearDown]
         public void TearDown()
         {
             _session.Dispose();
