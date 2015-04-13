@@ -1,15 +1,65 @@
 ﻿using System.Linq;
 using ConsoleApplication;
 using NHibernate;
+using NHibernate.Criterion;
 using NUnit.Framework;
 using ConsoleApplication.Model;
 
 namespace UnitTests
 {
-    public class NHibernateTests
+    public class NHibernateBaseTest
     {
-        private ISession _session;
+        protected ISession _session;
 
+        [TestFixtureSetUp]
+        public void SetUp()
+        {
+            var cfg = NHibernateHelper.ConfigureNHibernate();
+            //NHibernateHelper.CreateSchema(cfg);
+            var sessionFactory = cfg.BuildSessionFactory();
+
+            _session = sessionFactory.OpenSession();
+        }
+
+        [TestFixtureTearDown]
+        public void TearDown()
+        {
+            _session.Dispose();
+        }
+
+    }
+
+    public class ProjectionTests : NHibernateBaseTest
+    {
+        [Test]
+        public void SimpleProjectionTest()
+        {
+            var result = _session.QueryOver<Person>()
+                                 .Select(x => x.Id)
+                                 .List<int>()
+                                 ;
+
+            Assert.NotNull(result);
+        }
+
+        [Test]
+        public void SimpleProjectionTestWithJoinAlias()
+        {
+            Pet petAlias = null;
+            var result = _session.QueryOver<Person>()
+                                 .JoinAlias(x => x.Pets, () => petAlias)
+                                 .Select(Projections.Property(() => petAlias.Id))
+                                 .List<int>()
+                                 ;
+
+            Assert.NotNull(result);
+        }
+
+
+    }
+
+    public class NHibernateTests : NHibernateBaseTest
+    {
         [Test]
         public void WhenQueryOverListCalledQueryIsEvaluatedInline()
         {
@@ -132,20 +182,6 @@ namespace UnitTests
             Assert.NotNull(result3);
         }
 
-        [TestFixtureSetUp]
-        public void SetUp()
-        {
-            var cfg = NHibernateHelper.ConfigureNHibernate();
-            //NHibernateHelper.CreateSchema(cfg);
-            var sessionFactory = cfg.BuildSessionFactory();
 
-            _session = sessionFactory.OpenSession();
-        }
-
-        [TestFixtureTearDown]
-        public void TearDown()
-        {
-            _session.Dispose();
-        }
     }
 }
