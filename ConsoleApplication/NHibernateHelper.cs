@@ -72,32 +72,7 @@ namespace ConsoleApplication
 
         public static void Seed(ISession session)
         {
-            //using (var session = NHibernateHelper.SessionFactory.OpenSession())
-            //{
-            //    var fp1 = new FundProduct { Name = "Fundusz #1" };
-            //    var fp2 = new FundProduct { Name = "Fundusz #2" };
-            //    var fp3 = new FundProduct { Name = "Fundusz #3" };
-            //    var fp4 = new FundProduct { Name = "Fundusz #4" };
 
-            //    fp1.ExcludedFromConversion.Add(fp2);
-            //    fp1.ExcludedFromConversion.Add(fp3);
-            //    fp1.ExcludedFromConversion.Add(fp4);
-
-            //    fp2.ExcludedFromConversion.Add(fp1);
-            //    fp2.ExcludedFromConversion.Add(fp3);
-            //    fp2.ExcludedFromConversion.Add(fp4);
-
-            //    var fundProds = new List<FundProduct>(new[] { fp1, fp2, fp3, fp4 });
-
-            //    fp3.ExcludedFromConversion.Add(fp1);
-
-            //    foreach (var fp in fundProds)
-            //        session.SaveOrUpdate(fp);
-
-            //    var name = new NameChange { FundProduct = fp1, Name = "SFIO :)", ValidSince = DateTime.Now.AddDays(-10) };
-            //    session.SaveOrUpdate(name);
-
-            //    session.Flush();
         }
     }
 }
