@@ -1,4 +1,4 @@
-using Iesi.Collections.Generic;
+using System.Collections.Generic;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -13,7 +13,7 @@ namespace ConsoleApplication.Entities
         public Pet()
         {
             // ReSharper disable VirtualMemberCallInContructor
-            Transporters = new HashedSet<Transporter>();
+            Transporters = new HashSet<Transporter>();
             // ReSharper restore VirtualMemberCallInContructor
         }
     }

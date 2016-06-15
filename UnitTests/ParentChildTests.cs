@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace UnitTests
 {
-    public class Class2 : NHibernateBaseTest
+    public class ParentChildTests : NHibernateBaseTest
     {
         [Test]
         public void test1()
@@ -22,10 +22,10 @@ namespace UnitTests
 
             person.AddPet(pet);
 
-            using (var tx = _session.BeginTransaction())
+            using (var tx = Session.BeginTransaction())
             {
-                _session.Save(person);
-                _session.Save(pet);
+                Session.Save(person);
+                Session.Save(pet);
 
                 tx.Commit();
             }

@@ -9,7 +9,7 @@ namespace UnitTests
         [Test]
         public void SimpleProjectionTest()
         {
-            var result = _session.QueryOver<Person>()
+            var result = Session.QueryOver<Person>()
                 .Select(x => x.Id)
                 .List<int>()
                 ;
@@ -21,7 +21,7 @@ namespace UnitTests
         public void SimpleProjectionTestWithJoinAlias()
         {
             Pet petAlias = null;
-            var result = _session.QueryOver<Person>()
+            var result = Session.QueryOver<Person>()
                 .JoinAlias(x => x.Pets, () => petAlias)
                 .Select(Projections.Property(() => petAlias.Id))
                 .List<int>()

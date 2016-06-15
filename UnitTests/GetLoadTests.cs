@@ -9,9 +9,9 @@ namespace UnitTests
         [Test]
         public void GetFirstLevelCache()
         {
-            var result = _session.Get<Person>(1);
+            var result = Session.Get<Person>(1);
             // SELECT ...
-            var result2 = _session.Get<Person>(1);
+            var result2 = Session.Get<Person>(1);
             // noop
 
             Assert.NotNull(result);
@@ -23,7 +23,7 @@ namespace UnitTests
         {
             const int unexistingId = 999;
 
-            var result = _session.Get<Person>(unexistingId);
+            var result = Session.Get<Person>(unexistingId);
         }
 
 
@@ -32,7 +32,7 @@ namespace UnitTests
         {
             const int unexistingId = 999;
 
-            var result = _session.Load<Person>(unexistingId);
+            var result = Session.Load<Person>(unexistingId);
 
             Assert.Throws<ArgumentException>(delegate { throw new ArgumentException(); });
         }

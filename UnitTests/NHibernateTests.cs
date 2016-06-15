@@ -9,7 +9,7 @@ namespace UnitTests
         [Test]
         public void WhenQueryOverListCalledQueryIsEvaluatedInline()
         {
-            var result = _session.QueryOver<Person>()
+            var result = Session.QueryOver<Person>()
                 .Where(x => x.Age > 10)
                 .List();
 
@@ -19,7 +19,7 @@ namespace UnitTests
         [Test]
         public void SelectNPlus1()
         {
-            var personResult = _session
+            var personResult = Session
                 .QueryOver<Person>()
                 .Future();
 
@@ -37,7 +37,7 @@ namespace UnitTests
         {
             Pet petAlias = null;
 
-            var personResult = _session
+            var personResult = Session
                 .QueryOver<Person>()
                 .JoinAlias(x => x.Pets, () => petAlias)
                 .List();
@@ -54,7 +54,7 @@ namespace UnitTests
         [Test]
         public void FetchTest()
         {
-            var personResult = _session
+            var personResult = Session
                 .QueryOver<Person>()
                 .Fetch(x => x.Pets).Eager
                 .Fetch(x => x.Pets.First().Transporters).Eager
@@ -73,7 +73,7 @@ namespace UnitTests
         {
             Pet pet = null;
 
-            var personResult = _session
+            var personResult = Session
                 .QueryOver<Person>()
                 .JoinAlias(x => x.Pets, () => pet)
                 .Future();
@@ -93,7 +93,7 @@ namespace UnitTests
             Pet petAlias = null;
             Transporter transporterAlias = null;
 
-            var result = _session.QueryOver<Person>()
+            var result = Session.QueryOver<Person>()
                 //.JoinAlias(x => x.Pets, () => petAlias)
                 //.JoinAlias(() => petAlias.Transporters, () => transporterAlias)
                 //.JoinQueryOver(x => x.Pets, () => petAlias)
@@ -106,7 +106,7 @@ namespace UnitTests
         [Test]
         public void GrandChildrenEagerJoin()
         {
-            var result1 = _session.QueryOver<Person>()
+            var result1 = Session.QueryOver<Person>()
                 .Fetch(x => x.Pets).Eager
                 .Fetch(x => x.Pets.First().Transporters).Eager
                 .List();
@@ -114,14 +114,14 @@ namespace UnitTests
             //left outer join Pet pets2_ on this_.Id=pets2_.Owner 
             //left outer join Transporter transporte3_ on pets2_.Id=transporte3_.Pet
 
-            var result2 = _session.QueryOver<Person>()
+            var result2 = Session.QueryOver<Person>()
                 .Fetch(x => x.Pets.First().Transporters).Eager
                 .List();
             //FROM Person this_
 
             Pet petAlias = null;
             Transporter transportAlias = null;
-            var result3 = _session.QueryOver<Person>()
+            var result3 = Session.QueryOver<Person>()
                 .JoinAlias(x => x.Pets, () => petAlias)
                 .JoinAlias(() => petAlias.Transporters, () => transportAlias)
                 .List();

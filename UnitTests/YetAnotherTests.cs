@@ -13,7 +13,7 @@ namespace UnitTests
             Pet petAlias = null;
             Transporter transporterAlias = null;
 
-            var person = _session.QueryOver<Person>()
+            var person = Session.QueryOver<Person>()
                 //.WhereRestrictionOn(x=>x.Name).IsLike("Marek")
                 .JoinAlias(x => x.Pets, () => petAlias, JoinType.LeftOuterJoin)
                 .JoinAlias(() => petAlias.Transporters, () => transporterAlias, JoinType.LeftOuterJoin)

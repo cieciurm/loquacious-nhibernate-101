@@ -4,7 +4,7 @@ using NUnit.Framework;
 
 namespace UnitTests
 {
-    public class Class1 : NHibernateBaseTest
+    public class EagerJoinTests : NHibernateBaseTest
     {
         [Test]
         public void test1()

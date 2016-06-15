@@ -1,4 +1,4 @@
-﻿using Iesi.Collections.Generic;
+﻿using System.Collections.Generic;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -11,7 +11,7 @@ namespace ConsoleApplication.Entities
 
         public FundProduct()
         {
-            ExcludedFromConversion = new HashedSet<FundProduct>();
+            ExcludedFromConversion = new HashSet<FundProduct>();
         }
     }
 
