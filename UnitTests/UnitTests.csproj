@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SelectChildrenFromParentTests.cs" />
     <Compile Include="EagerJoinTests.cs" />
     <Compile Include="ParentChildTests.cs" />
     <Compile Include="GetLoadTests.cs" />

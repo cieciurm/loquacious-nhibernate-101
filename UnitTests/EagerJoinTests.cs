@@ -29,16 +29,5 @@ namespace UnitTests
                 .WhereRestrictionOn(() => transporterAlias.Description).IsLike("zimę", MatchMode.Anywhere)
                 .SingleOrDefault();
         }
-
-        [Test]
-        public void test3()
-        {
-            Transporter transporterAlias = null;
-
-            var res = Session.QueryOver<Pet>()
-                .JoinAlias(x => x.Transporters, () => transporterAlias)
-                .Select(x=>x.Transporters)
-                .List<Transporter>();
-        }
     }
 }

@@ -8,7 +8,7 @@ namespace ConsoleApplication.Entities
     {
         public virtual string Name { get; set; }
         public virtual int Age { get; set; }
-        public virtual ISet<Pet> Pets { get; set; }
+        public virtual ISet<Pet> Pets { get; protected set; }
 
         public Person()
         {
@@ -30,9 +30,7 @@ namespace ConsoleApplication.Entities
             Id(x => x.Id, c => c.Generator(new IdentityGeneratorDef()));
             Property(x => x.Name);
             Property(x => x.Age);
-            //Set(x => x.Pets, m => m.Cascade(Cascade.All), c => c.OneToMany());
-            Set(x => x.Pets, m => {}, c => c.OneToMany());
+            Set(x => x.Pets, m => m.Cascade(Cascade.All), c => c.OneToMany());
         }
-
     }
 }

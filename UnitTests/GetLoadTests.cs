@@ -1,5 +1,6 @@
 ﻿using System;
 using ConsoleApplication.Entities;
+using NHibernate;
 using NUnit.Framework;
 
 namespace UnitTests
@@ -24,6 +25,8 @@ namespace UnitTests
             const int unexistingId = 999;
 
             var result = Session.Get<Person>(unexistingId);
+
+            Assert.Null(result);
         }
 
 
@@ -34,9 +37,11 @@ namespace UnitTests
 
             var result = Session.Load<Person>(unexistingId);
 
-            Assert.Throws<ArgumentException>(delegate { throw new ArgumentException(); });
+
+            Assert.Throws<ObjectNotFoundException>(() =>
+            {
+                var age = result.Age;
+            });
         }
-
-
     }
 }

@@ -18,7 +18,6 @@ namespace ConsoleApplication
         public static Configuration ConfigureNHibernate()
         {
             var cfg = new Configuration();
-            //cfg.SessionFactoryName("BuildIt");
 
             cfg.DataBaseIntegration(db =>
             {
@@ -88,11 +87,11 @@ namespace ConsoleApplication
                 pet3.Transporters.Add(transporter1);
                 pet3.Transporters.Add(transporter2);
 
-                person.Pets.Add(pet1);
-                person.Pets.Add(pet2);
-                person.Pets.Add(pet3);
+                person.AddPet(pet1);
+                person.AddPet(pet2);
+                person.AddPet(pet3);
 
-                //session.Save(person);
+                session.Save(person);
 
                 tx.Commit();
             }

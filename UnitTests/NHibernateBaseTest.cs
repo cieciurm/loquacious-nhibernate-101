@@ -8,7 +8,7 @@ namespace UnitTests
     {
         protected ISession Session;
 
-        [TestFixtureSetUp]
+        [OneTimeSetUp]
         public void SetUp()
         {
             var cfg = NHibernateHelper.ConfigureNHibernate();
@@ -18,7 +18,7 @@ namespace UnitTests
             Session = sessionFactory.OpenSession();
         }
 
-        [TestFixtureTearDown]
+        [OneTimeTearDown]
         public void TearDown()
         {
             Session.Dispose();
