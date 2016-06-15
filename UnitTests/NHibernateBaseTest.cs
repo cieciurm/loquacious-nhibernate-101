@@ -6,7 +6,7 @@ namespace UnitTests
 {
     public class NHibernateBaseTest
     {
-        protected ISession _session;
+        protected ISession Session;
 
         [TestFixtureSetUp]
         public void SetUp()
@@ -15,13 +15,13 @@ namespace UnitTests
             //NHibernateHelper.CreateSchema(cfg);
             var sessionFactory = cfg.BuildSessionFactory();
 
-            _session = sessionFactory.OpenSession();
+            Session = sessionFactory.OpenSession();
         }
 
         [TestFixtureTearDown]
         public void TearDown()
         {
-            _session.Dispose();
+            Session.Dispose();
         }
 
     }

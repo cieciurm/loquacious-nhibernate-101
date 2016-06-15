@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using ConsoleApplication.Model;
+using ConsoleApplication.Entities;
 using NHibernate.SqlCommand;
 using NUnit.Framework;
 

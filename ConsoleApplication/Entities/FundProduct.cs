@@ -2,11 +2,10 @@
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace ConsoleApplication.Model
+namespace ConsoleApplication.Entities
 {
-    public class FundProduct
+    public class FundProduct : Entity
     {
-        public virtual int Id { get; set; }
         public virtual string Name { get; set; }
         public virtual ISet<FundProduct> ExcludedFromConversion { get; set; }
 
@@ -22,12 +21,13 @@ namespace ConsoleApplication.Model
         {
             Table("FundProducts"); // custom table name
 
-            Id<int>(x => x.Id, m =>
+            Id(x => x.Id, m =>
             {
                 m.Generator(Generators.Native); // auto Id incremenatation
                 m.Column("FundProductId"); // custom Primary Key name
             });
-            Property<string>(x => x.Name);
+
+            Property(x => x.Name);
 
             Set(x => x.ExcludedFromConversion, m =>
             {

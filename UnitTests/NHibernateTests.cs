@@ -1,6 +1,6 @@
 ﻿using System.Linq;
+using ConsoleApplication.Entities;
 using NUnit.Framework;
-using ConsoleApplication.Model;
 
 namespace UnitTests
 {

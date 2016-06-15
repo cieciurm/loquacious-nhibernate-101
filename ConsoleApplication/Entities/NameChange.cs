@@ -1,11 +1,10 @@
 ﻿using System;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace ConsoleApplication.Model
+namespace ConsoleApplication.Entities
 {
-    public class NameChange
+    public class NameChange : Entity
     {
-        public virtual int Id { get; set; }
         public virtual FundProduct FundProduct { get; set; }
         public virtual string Name { get; set; }
         public virtual DateTime ValidSince { get; set; }

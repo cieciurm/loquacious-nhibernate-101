@@ -1,5 +1,5 @@
 ﻿using System;
-using ConsoleApplication.Model;
+using ConsoleApplication.Entities;
 using NUnit.Framework;
 
 namespace UnitTests

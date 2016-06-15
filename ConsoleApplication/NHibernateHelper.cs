@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NHibernate.Cfg;
+﻿using NHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
@@ -9,16 +7,18 @@ using System.Data;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
 using System.Reflection;
-using ConsoleApplication.Model;
+using ConsoleApplication.Entities;
 
 namespace ConsoleApplication
 {
     public class NHibernateHelper
     {
+        public const string ConnectionString = @"Data Source=.\;Initial Catalog=nhibernate-test;Integrated Security=true";
+
         public static Configuration ConfigureNHibernate()
         {
             var cfg = new Configuration();
-            cfg.SessionFactoryName("BuildIt");
+            //cfg.SessionFactoryName("BuildIt");
 
             cfg.DataBaseIntegration(db =>
             {
@@ -27,17 +27,16 @@ namespace ConsoleApplication
                 db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
                 db.IsolationLevel = IsolationLevel.ReadCommitted;
 
-                db.ConnectionString = "Data Source=(local)\\SQLEXPRESS;Initial Catalog=nhibernate-test;Integrated Security=true";
+                db.ConnectionString = ConnectionString;
                 db.Timeout = 10;
 
-                // enabled for testing
                 db.LogFormattedSql = true;
                 db.LogSqlInConsole = true;
-                db.AutoCommentSql = true;
+                //db.AutoCommentSql = true;
             });
 
             var mapping = GetAllMappingsFromAssembly();
-            cfg.AddDeserializedMapping(mapping, "nhibernate-test");
+            cfg.AddDeserializedMapping(mapping, null);
             SchemaMetadataUpdater.QuoteTableAndColumns(cfg);
 
             return cfg;
@@ -66,13 +65,37 @@ namespace ConsoleApplication
 
         public static void CreateSchema(Configuration cfg)
         {
-            //new SchemaExport(cfg).Drop(false, true);
-            new SchemaExport(cfg).Create(false, true);
+            var schemaExport = new SchemaExport(cfg);
+
+            schemaExport.Create(false, true);
         }
 
         public static void Seed(ISession session)
         {
+            using (var tx = session.BeginTransaction())
+            {
+                var person = new Person { Name = "Marek", Age = 16 };
 
+                var transporter1 = new Transporter { Description = "transporterek na lato" };
+                var transporter2 = new Transporter { Description = "transporterek na zimę" };
+
+                var pet1 = new Pet { Name = "Pieseł #1" };
+                var pet2 = new Pet { Name = "Pieseł #2" };
+                var pet3 = new Pet { Name = "Koteł #2" };
+
+                pet1.Transporters.Add(transporter1);
+                pet2.Transporters.Add(transporter2);
+                pet3.Transporters.Add(transporter1);
+                pet3.Transporters.Add(transporter2);
+
+                person.Pets.Add(pet1);
+                person.Pets.Add(pet2);
+                person.Pets.Add(pet3);
+
+                //session.Save(person);
+
+                tx.Commit();
+            }
         }
     }
 }

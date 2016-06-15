@@ -1,4 +1,4 @@
-using ConsoleApplication.Model;
+using ConsoleApplication.Entities;
 using NHibernate.Criterion;
 using NUnit.Framework;
 

@@ -48,11 +48,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\FundProduct.cs" />
-    <Compile Include="Model\NameChange.cs" />
-    <Compile Include="Model\Person.cs" />
-    <Compile Include="Model\Pet.cs" />
-    <Compile Include="Model\Transporter.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\FundProduct.cs" />
+    <Compile Include="Entities\NameChange.cs" />
+    <Compile Include="Entities\Person.cs" />
+    <Compile Include="Entities\Pet.cs" />
+    <Compile Include="Entities\Transporter.cs" />
     <Compile Include="NHibernateHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

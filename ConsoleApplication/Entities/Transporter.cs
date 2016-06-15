@@ -1,12 +1,12 @@
 ﻿using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace ConsoleApplication.Model
+namespace ConsoleApplication.Entities
 {
-    public class Transporter
+    public class Transporter : Entity
     {
-        public virtual int Id { get; set; }
         public virtual string Description { get; set; }
+
         public virtual Pet Pet { get; set; }
     }
 

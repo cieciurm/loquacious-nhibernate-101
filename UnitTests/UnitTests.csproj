@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class1.cs" />
+    <Compile Include="Class2.cs" />
     <Compile Include="GetLoadTests.cs" />
     <Compile Include="NHibernateBaseTest.cs" />
     <Compile Include="NHibernateTests.cs" />
