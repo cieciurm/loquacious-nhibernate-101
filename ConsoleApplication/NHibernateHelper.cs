@@ -1,4 +1,5 @@
-﻿using NHibernate.Cfg;
+﻿using System.Configuration;
+using NHibernate.Cfg;
 using NHibernate;
 using NHibernate.Cfg.MappingSchema;
 using NHibernate.Dialect;
@@ -8,13 +9,12 @@ using NHibernate.Mapping.ByCode;
 using NHibernate.Tool.hbm2ddl;
 using System.Reflection;
 using ConsoleApplication.Entities;
+using Configuration = NHibernate.Cfg.Configuration;
 
 namespace ConsoleApplication
 {
     public class NHibernateHelper
     {
-        public const string ConnectionString = @"Data Source=.\;Initial Catalog=nhibernate-test;Integrated Security=true";
-
         public static Configuration ConfigureNHibernate()
         {
             var cfg = new Configuration();
@@ -26,7 +26,7 @@ namespace ConsoleApplication
                 db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
                 db.IsolationLevel = IsolationLevel.ReadCommitted;
 
-                db.ConnectionString = ConnectionString;
+                db.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnectionString"].ConnectionString;
                 db.Timeout = 10;
 
                 db.LogFormattedSql = true;
